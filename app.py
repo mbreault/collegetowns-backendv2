@@ -4,8 +4,18 @@ import os
 import dotenv
 import json
 from classes import Place, PlaceSchema
+from flask_cors import CORS
+from flask import request
+import logging
+
+## config log file
+logging.basicConfig(filename='app.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 app = Flask(__name__)
+CORS(app)
 
 # Load environment variables from .env file
 dotenv.load_dotenv()
@@ -91,7 +101,20 @@ def hello_world():
 
 @app.route("/default")
 def get_default():
-    json_data = execute_sql("select top 10 * from PlacesDistancesView")
+    enum_list = request.args.getlist('enums') 
+    if len(enum_list) == 0:
+        sql = "select * from PlacesDistancesView ORDER BY place1walkscore DESC, placename1, distance;"
+    else:
+        sql = """
+        select * from PlacesDistancesView 
+        WHERE place2enum in ({0})
+        ORDER BY place1walkscore DESC, placename1, distance;
+        """
+        ## list of quoted words
+        sql = sql.format(",".join(["'" + x + "'" for x in enum_list]))
+        logger.debug(sql)
+
+    json_data = execute_sql(sql)
     transformed_data = transform(json_data)
     return transformed_data
 
