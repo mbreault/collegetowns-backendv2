@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "undefined/subscriptions/75fc240d-8b4f-429d-8b44-d73cd8958687/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/embersilk-collegetowns-app",
+    "appService.deploySubpath": "."
+}
