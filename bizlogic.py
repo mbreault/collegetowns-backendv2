@@ -68,12 +68,19 @@ def getmainplaces(placeenums):
     return list(intersection(places_list))
 
 
-def default_search(enum_list):
-    logger.debug(enum_list)
-    if len(enum_list) == 0:
+def default_search(enums):
+    logger.debug(enums)
+
+    if not enums:
         sql = "select * from PlacesDistancesView ORDER BY place1walkscore DESC, placename1, distance;"
     else:
+        enum_list = enums.split(",")
         placeids = getmainplaces(enum_list)
+
+        ## if not places match then return empty list
+        if not placeids:
+            return []
+
         sql = """
         select * from PlacesDistancesView 
         WHERE place2enum in ({0}) AND placeid1 in ({1})
