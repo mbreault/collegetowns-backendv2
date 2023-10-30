@@ -5,7 +5,7 @@ from database import execute_sql
 from classes import Place, PlaceSchema
 
 logger = logging.getLogger(__name__)
-
+logger.setLevel(logging.DEBUG)
 
 def transform(data):
     """

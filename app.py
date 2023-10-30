@@ -26,7 +26,7 @@ def index():
 
 @app.route("/default")
 def get_default():
-    return default_search(request.args.getlist("enums"))
+    return default_search(request.args.get("enums").split(","))
 
 
 if __name__ == "__main__":
