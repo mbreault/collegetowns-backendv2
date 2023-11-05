@@ -7,6 +7,7 @@ from classes import Place, PlaceSchema
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
+
 def transform(data):
     """
     The data has multiple lines of restaurants (place2) for each college (place1)
@@ -96,3 +97,17 @@ def default_search(enums):
     json_data = execute_sql(sql)
     transformed_data = transform(json_data)
     return transformed_data
+
+
+def fetch_settings():
+    sql = "SELECT * FROM Brands ORDER BY BrandName ASC;"
+    json_data = execute_sql(sql)
+    data = json.loads(json_data)
+    return data
+
+
+def fetch_filters():
+    sql = "SELECT DISTINCT place2enum as enum FROM PlacesDistancesView;"
+    json_data = execute_sql(sql)
+    data = json.loads(json_data)
+    return data

@@ -11,6 +11,7 @@ dotenv.load_dotenv()
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
+
 def convert_to_json(data):
     """
     Use json.dumps with a handler to convert datetime to strings
