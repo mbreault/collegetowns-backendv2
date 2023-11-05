@@ -109,5 +109,6 @@ def fetch_settings():
 def fetch_filters():
     sql = "SELECT DISTINCT place2enum as enum FROM PlacesDistancesView;"
     json_data = execute_sql(sql)
-    data = json.loads(json_data)
+    data = [enum['enum'] for enum in json.loads(json_data)]
+
     return data
