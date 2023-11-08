@@ -34,9 +34,9 @@ def get_settings():
     return fetch_settings()
 
 
-@app.route("/filters")
-def get_filters():
-    return fetch_filters()
+@app.route("/filters/<string:userid>")
+def get_filters(userid):
+    return fetch_filters(userid)
 
 
 if __name__ == "__main__":
