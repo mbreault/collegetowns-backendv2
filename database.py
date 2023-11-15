@@ -58,7 +58,10 @@ def execute_sql(sql, params=None):
 
     conn = connect_db()
     cursor = conn.cursor()
-    cursor.execute(sql, params)
+    if params is None:
+        cursor.execute(sql)
+    else:
+        cursor.execute(sql, params)
     column_names = [column[0] for column in cursor.description]
     data = cursor.fetchall()
     conn.close()
