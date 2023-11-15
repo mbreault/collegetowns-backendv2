@@ -114,3 +114,11 @@ def fetch_filters(userid):
     data = [enum['enum'] for enum in json.loads(json_data)[(int(userid)-1):]]
 
     return data
+
+
+def fetch_place(guid):
+    sql = "SELECT * FROM Places WHERE guidcolumn = ?"
+    # Execute with parameter 
+    json_data = execute_sql(sql, [guid])
+    data = json.loads(json_data)[0]
+    return data

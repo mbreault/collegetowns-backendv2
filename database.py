@@ -47,7 +47,7 @@ def connect_db():
     return conn
 
 
-def execute_sql(sql):
+def execute_sql(sql, params=None):
     """
     1.  Execute SQL
     2.  Get Column Names
@@ -58,7 +58,7 @@ def execute_sql(sql):
 
     conn = connect_db()
     cursor = conn.cursor()
-    cursor.execute(sql)
+    cursor.execute(sql, params)
     column_names = [column[0] for column in cursor.description]
     data = cursor.fetchall()
     conn.close()

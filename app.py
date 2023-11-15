@@ -4,7 +4,7 @@ from flask_cors import CORS
 from flask import request
 import logging
 from database import execute_sql
-from bizlogic import default_search, fetch_settings, fetch_filters
+from bizlogic import default_search, fetch_settings, fetch_filters, fetch_place
 
 
 ## config log file
@@ -37,6 +37,10 @@ def get_settings():
 @app.route("/filters/<string:userid>")
 def get_filters(userid):
     return fetch_filters(userid)
+
+@app.route("/places/<string:guid>")
+def get_place(guid):
+    return fetch_place(guid)
 
 
 if __name__ == "__main__":
