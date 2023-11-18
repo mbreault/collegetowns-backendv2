@@ -2,13 +2,14 @@ from marshmallow import Schema, fields
 
 
 class Place:
-    def __init__(self, name, address, walkscore, distance, latitude, longitude):
+    def __init__(self, name, address, walkscore, distance, latitude, longitude, guid):
         self.name = name
         self.address = address
         self.walkscore = walkscore
         self.distance = distance
         self.latitude = latitude
         self.longitude = longitude
+        self.guid = guid
         self.places = []
 
 
@@ -20,3 +21,4 @@ class PlaceSchema(Schema):
     places = fields.Nested("self", many=True)
     latitude = fields.Float()
     longitude = fields.Float()
+    guid = fields.Str()

@@ -24,10 +24,11 @@ def transform(data):
             row["distance"],
             row["place2latitude"],
             row["place2longitude"],
+            row["place2guid"].lower(),
         )
         if row["placename1"] not in processed:
             place = Place(
-                row["placename1"], row["placeaddress1"], row["place1walkscore"], None, row["place1latitude"], row["place1longitude"]
+                row["placename1"], row["placeaddress1"], row["place1walkscore"], None, row["place1latitude"], row["place1longitude"], row["place1guid"].lower()
             )
 
             processed[row["placename1"]] = place
