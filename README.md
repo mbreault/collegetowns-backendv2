@@ -1,10 +1,10 @@
-# College Towns
+# Digital Nomad
 
 ## Introduction
 
-One sentence this app is a WalkScore on steroids.
+One sentence: this app is a WalkScore on steroids.
 
-The purpose is to access the livibity of college towns in the United States based on series of custom criteria.
+The purpose is to access the livibity of cities and towns in the United States based on series of custom criteria.
 
 ### Where WalkScore falls short
 
@@ -33,6 +33,7 @@ The Capital Grille: 60 miles.
 MLB Ballpark: 120 miles.
 OrangeTheory Fitness: 5 miles.
 Starbucks: 1 mile.
+D1 College: 2 miles.
 
 
 
