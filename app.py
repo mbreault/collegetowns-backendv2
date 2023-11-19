@@ -24,9 +24,13 @@ def index():
     return "Hello, World!"
 
 
-@app.route("/default")
+@app.route("/default", methods=["POST"])
 def get_default():
-    return default_search(request.args.get("enums"))
+    filter_data = request.get_json()
+    # Process the filter_data to extract enums, rails, airports, etc.
+    # You might need to modify your default_search function to accept this new format.
+    result = default_search(filter_data["enums"])
+    return result
 
 
 @app.route("/settings")
@@ -37,6 +41,7 @@ def get_settings():
 @app.route("/filters/<string:userid>")
 def get_filters(userid):
     return fetch_filters(userid)
+
 
 @app.route("/places/<string:guid>")
 def get_place(guid):

@@ -28,7 +28,13 @@ def transform(data):
         )
         if row["placename1"] not in processed:
             place = Place(
-                row["placename1"], row["placeaddress1"], row["place1walkscore"], None, row["place1latitude"], row["place1longitude"], row["place1guid"].lower()
+                row["placename1"],
+                row["placeaddress1"],
+                row["place1walkscore"],
+                None,
+                row["place1latitude"],
+                row["place1longitude"],
+                row["place1guid"].lower(),
             )
 
             processed[row["placename1"]] = place
@@ -72,13 +78,11 @@ def getmainplaces(placeenums):
     return list(intersection(places_list))
 
 
-def default_search(enums):
-    logger.debug(enums)
-
-    if not enums:
+def default_search(filter):
+    if not filter.get("enums"):
         sql = "select * from PlacesDistancesView ORDER BY place1walkscore DESC, placename1, distance;"
     else:
-        enum_list = enums.split(",")
+        enum_list = filter["enums"]
         placeids = getmainplaces(enum_list)
 
         ## if not places match then return empty list
@@ -112,14 +116,14 @@ def fetch_settings():
 def fetch_filters(userid):
     sql = "SELECT DISTINCT place2enum as enum FROM PlacesDistancesView;"
     json_data = execute_sql(sql)
-    data = [enum['enum'] for enum in json.loads(json_data)[(int(userid)-1):]]
+    data = [enum["enum"] for enum in json.loads(json_data)[(int(userid) - 1) :]]
 
     return data
 
 
 def fetch_place(guid):
     sql = "SELECT * FROM Places WHERE guidcolumn = ?"
-    # Execute with parameter 
+    # Execute with parameter
     json_data = execute_sql(sql, [guid])
     data = json.loads(json_data)[0]
     return data
