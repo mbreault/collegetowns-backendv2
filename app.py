@@ -29,7 +29,7 @@ def get_default():
     filter_data = request.get_json()
     # Process the filter_data to extract enums, rails, airports, etc.
     # You might need to modify your default_search function to accept this new format.
-    result = default_search(filter_data["enums"])
+    result = default_search(filter_data)
     return result
 
 
