@@ -5,8 +5,6 @@ import dotenv
 import json
 import logging
 
-# Load environment variables from .env file
-dotenv.load_dotenv()
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)

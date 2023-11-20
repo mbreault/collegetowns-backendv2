@@ -5,7 +5,9 @@ from flask import request
 import logging
 from database import execute_sql
 from bizlogic import default_search, fetch_settings, fetch_filters, fetch_place
+from dotenv import load_dotenv
 
+load_dotenv()
 
 ## config log file
 logging.basicConfig(
