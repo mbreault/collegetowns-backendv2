@@ -55,25 +55,52 @@ def intersection(sets):
     return reduce(set.intersection, sets)
 
 
+def process_rail_enum():
+    places = set()
+    sql = "SELECT PlaceID FROM Places WHERE HasRails=1"
+    json_data = execute_sql(sql)
+    data = json.loads(json_data)
+    for row in data:
+        places.add(row["PlaceID"])
+
+    return places
+
+
+def process_place_enum(placeenum):
+    places = set()
+    sql = "SELECT PlaceID1 FROM PlacesDistancesView WHERE place2enum = ?"
+    params = (placeenum,)
+    json_data = execute_sql(sql, params)
+    data = json.loads(json_data)
+    for row in data:
+        places.add(row["PlaceID1"])
+
+    return places
+
+
 def getmainplaces(placeenums):
     """
     For each enum in the list, get the ids of the main places
     Then find the intersection of those ids and return that list
     """
 
+    enums = list(placeenums)
+
     places_list = []
 
-    for placeenum in placeenums:
-        places = set()
-        sql = "SELECT PlaceID1 FROM PlacesDistancesView WHERE place2enum = {0}"
-        sql = sql.format("'" + placeenum + "'")
-        logger.debug(sql)
-        json_data = execute_sql(sql)
-        data = json.loads(json_data)
-        for row in data:
-            places.add(row["PlaceID1"])
+    has_rail = False
 
-        places_list.append(places)
+    ## if TRAIN in placeenums then set HAS_RAIL = True and remove from list
+    if "TRAIN" in enums:
+        has_rail = True
+        enums.remove("TRAIN")
+
+    for placeenum in enums:
+        places_list.append(process_place_enum(placeenum))
+
+    ## if has rail then add rail places to list
+    if has_rail:
+        places_list.append(process_rail_enum())
 
     return list(intersection(places_list))
 
