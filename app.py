@@ -6,6 +6,10 @@ import logging
 from database import execute_sql
 from bizlogic import default_search, fetch_settings, fetch_filters, fetch_place
 from dotenv import load_dotenv
+import highlight_io
+from highlight_io.integrations.flask import FlaskIntegration
+import os
+
 
 load_dotenv()
 
@@ -21,9 +25,20 @@ app = Flask(__name__)
 CORS(app)
 
 
+# `instrument_logging=True` sets up logging instrumentation.
+# if you do not want to send logs or are using `loguru`, pass `instrument_logging=False`
+H = highlight_io.H(
+	os.getenv("HIGHLIGHT_API_KEY"),
+	integrations=[FlaskIntegration()],
+	instrument_logging=True,
+	service_name="collegetowns-api",
+	service_version="git-sha",
+)
+
+
 @app.route("/")
 def index():
-    return "Hello, World!"
+    return "Test endpoint"
 
 
 @app.route("/default", methods=["POST"])
