@@ -55,6 +55,7 @@ def intersection(sets):
     logger.debug(sets)
     return reduce(set.intersection, sets)
 
+
 @functools.lru_cache(maxsize=None)
 def process_rail_enum():
     places = set()
@@ -66,10 +67,11 @@ def process_rail_enum():
 
     return places
 
+
 @functools.lru_cache(maxsize=None)
 def process_place_enum(placeenum):
     places = set()
-    sql = "SELECT DISTINCT PlaceID1 FROM PlacesDistancesView WHERE place2enum = ?"
+    sql = "SELECT PlaceID1 FROM PlacesDistancesView WHERE place2enum = ?"
     params = (placeenum,)
     json_data = execute_sql(sql, params)
     data = json.loads(json_data)
@@ -103,15 +105,21 @@ def getmainplaces(placeenums):
     if has_rail:
         places_list.append(process_rail_enum())
 
-    return list(intersection(places_list))
+    return set(intersection(places_list))
+
+
+@functools.lru_cache(maxsize=None)
+def cached_getmainplaces(placeenums_tuple):
+    # Convert the tuple back to a list and call the original function
+    return getmainplaces(list(placeenums_tuple))
 
 
 def default_search(filter):
     if not filter.get("enums"):
-        sql = "select * from PlacesDistancesView ORDER BY place1walkscore DESC, placename1, distance;"
+        sql = "select top 10000 * from PlacesDistancesView ORDER BY place1walkscore DESC, placename1, distance;"
     else:
         enum_list = filter["enums"]
-        placeids = getmainplaces(enum_list)[:100]
+        placeids = list(cached_getmainplaces(tuple(enum_list)))[:100]
 
         ## if not places match then return empty list
         if not placeids:
@@ -158,7 +166,7 @@ def fetch_place(guid):
 
 
 def fetch_filtergroups():
-    sql = "SELECT * FROM AvailableFiltersView";
+    sql = "SELECT * FROM AvailableFiltersView"
     json_data = execute_sql(sql)
     data = json.loads(json_data)
     return data
