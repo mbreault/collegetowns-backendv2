@@ -107,17 +107,17 @@ def getmainplaces(placeenums):
 
 def default_search(filter):
     if not filter.get("enums"):
-        sql = "select TOP 1000 * from PlacesDistancesView ORDER BY place1walkscore DESC, placename1, distance;"
+        sql = "select * from PlacesDistancesView ORDER BY place1walkscore DESC, placename1, distance;"
     else:
         enum_list = filter["enums"]
-        placeids = getmainplaces(enum_list)
+        placeids = getmainplaces(enum_list)[:100]
 
         ## if not places match then return empty list
         if not placeids:
             return []
 
         sql = """
-        select TOP 1000 * from PlacesDistancesView 
+        select * from PlacesDistancesView 
         WHERE place2enum in ({0}) AND placeid1 in ({1})
         ORDER BY place1walkscore DESC, placename1, distance;
         """
