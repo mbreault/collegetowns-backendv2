@@ -68,7 +68,7 @@ def process_rail_enum():
 
 def process_place_enum(placeenum):
     places = set()
-    sql = "SELECT PlaceID1 FROM PlacesDistancesView WHERE place2enum = ?"
+    sql = "SELECT DISTINCT PlaceID1 FROM PlacesDistancesView WHERE place2enum = ?"
     params = (placeenum,)
     json_data = execute_sql(sql, params)
     data = json.loads(json_data)
@@ -107,7 +107,7 @@ def getmainplaces(placeenums):
 
 def default_search(filter):
     if not filter.get("enums"):
-        sql = "select * from PlacesDistancesView ORDER BY place1walkscore DESC, placename1, distance;"
+        sql = "select TOP 1000 * from PlacesDistancesView ORDER BY place1walkscore DESC, placename1, distance;"
     else:
         enum_list = filter["enums"]
         placeids = getmainplaces(enum_list)
@@ -117,7 +117,7 @@ def default_search(filter):
             return []
 
         sql = """
-        select * from PlacesDistancesView 
+        select TOP 1000 * from PlacesDistancesView 
         WHERE place2enum in ({0}) AND placeid1 in ({1})
         ORDER BY place1walkscore DESC, placename1, distance;
         """
