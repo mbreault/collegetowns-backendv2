@@ -3,6 +3,7 @@ import logging
 import json
 from database import execute_sql
 from classes import Place, PlaceSchema
+import functools
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -54,7 +55,7 @@ def intersection(sets):
     logger.debug(sets)
     return reduce(set.intersection, sets)
 
-
+@functools.lru_cache(maxsize=None)
 def process_rail_enum():
     places = set()
     sql = "SELECT PlaceID FROM Places WHERE HasRails=1"
@@ -65,7 +66,7 @@ def process_rail_enum():
 
     return places
 
-
+@functools.lru_cache(maxsize=None)
 def process_place_enum(placeenum):
     places = set()
     sql = "SELECT DISTINCT PlaceID1 FROM PlacesDistancesView WHERE place2enum = ?"
