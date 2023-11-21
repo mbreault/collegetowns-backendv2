@@ -4,7 +4,7 @@ from flask_cors import CORS
 from flask import request
 import logging
 from database import execute_sql
-from bizlogic import default_search, fetch_settings, fetch_filters, fetch_place
+from bizlogic import default_search, fetch_settings, fetch_filters, fetch_place, fetch_filtergroups
 from dotenv import load_dotenv
 import highlight_io
 from highlight_io.integrations.flask import FlaskIntegration
@@ -28,11 +28,11 @@ CORS(app)
 # `instrument_logging=True` sets up logging instrumentation.
 # if you do not want to send logs or are using `loguru`, pass `instrument_logging=False`
 H = highlight_io.H(
-	os.getenv("HIGHLIGHT_API_KEY"),
-	integrations=[FlaskIntegration()],
-	instrument_logging=True,
-	service_name="collegetowns-api",
-	service_version="git-sha",
+    os.getenv("HIGHLIGHT_API_KEY"),
+    integrations=[FlaskIntegration()],
+    instrument_logging=True,
+    service_name="collegetowns-api",
+    service_version="git-sha",
 )
 
 
@@ -63,6 +63,11 @@ def get_filters():
 @app.route("/places/<string:guid>")
 def get_place(guid):
     return fetch_place(guid)
+
+
+@app.route("/filtergroups")
+def get_filtergroups():
+    return fetch_filtergroups()
 
 
 if __name__ == "__main__":

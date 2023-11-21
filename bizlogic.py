@@ -154,3 +154,10 @@ def fetch_place(guid):
     json_data = execute_sql(sql, [guid])
     data = json.loads(json_data)[0]
     return data
+
+
+def fetch_filtergroups():
+    sql = "SELECT * FROM AvailableFiltersView";
+    json_data = execute_sql(sql)
+    data = json.loads(json_data)
+    return data
